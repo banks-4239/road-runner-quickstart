@@ -186,7 +186,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.spinnerL.setPower(0);
     }
 
-    public void redToStorageUnit(){
+    public void redDuckToStorageUnit(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Trajectory red1 = drive.trajectoryBuilder(new Pose2d(-41, -63, Math.toRadians(-90)))
                 .lineToLinearHeading(duckSpinRed)
@@ -214,6 +214,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
     }
     public void redWarehouseWithFreight(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+
+
         Trajectory red1 = drive.trajectoryBuilder(startPosRedWarehouse)
                 .lineToLinearHeading(freightRedWarehouse)
                 .build();
@@ -290,7 +293,8 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
     }
 
-
+    //public Trajectory switchTraj(){
+    //}
 
 
 
