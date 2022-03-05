@@ -40,10 +40,10 @@ public class ShinyNewAutonomous extends LinearOpMode {
     Pose2d startPosRedWarehouse = new Pose2d(7, -63, Math.toRadians(-90));
     Pose2d freightRedWareHouse = new Pose2d(-12, -45, Math.toRadians(90));
     Pose2d endPosRedWarehouse = new Pose2d(65, -38, Math.toRadians(90));
-    Pose2d intermediatePoint1 = new Pose2d(-33, -65, Math.toRadians(0));
-    Pose2d intermediatePoint2 = new Pose2d(7, -65, Math.toRadians(0));
-    Pose2d intermediatePoint3 = new Pose2d(38, -65, Math.toRadians(0));
-    Pose2d intermediatePoint4 = new Pose2d(38, -38, Math.toRadians(0));
+    Pose2d redIntermediatePoint1 = new Pose2d(-33, -65, Math.toRadians(0));
+    Pose2d redIntermediatePoint2 = new Pose2d(7, -65, Math.toRadians(0));
+    Pose2d redIntermediatePoint3 = new Pose2d(38, -65, Math.toRadians(0));
+    Pose2d redIntermediatePoint4 = new Pose2d(38, -38, Math.toRadians(0));
 
     public int hubNum;
 
@@ -200,9 +200,6 @@ public class ShinyNewAutonomous extends LinearOpMode {
         if (isStopRequested()) return;
         drive.setPoseEstimate(new Pose2d(-41, -63, Math.toRadians(-90)));
         drive.followTrajectory(red1);
-        spinnerRed(0.2);
-        sleep(5000);
-        spinnerEnd();
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
     }
@@ -212,10 +209,18 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(duckSpinRed)
                 .build();
 
-        Trajectory red3 = drive.trajectoryBuilder(red1.end())
+        Trajectory red2 = drive.trajectoryBuilder(red1.end())
                 .lineToLinearHeading(new Pose2d(new Vector2d(-63, -37), Math.toRadians(180)))
                 .build();
-
+        Trajectory red3 = drive.trajectoryBuilder(red2.end())
+                .lineToLinearHeading(redIntermediatePoint3)
+                .build();
+        Trajectory red4 = drive.trajectoryBuilder(red2.end())
+                .lineToLinearHeading(redIntermediatePoint4)
+                .build();
+        Trajectory red5 = drive.trajectoryBuilder(red2.end())
+                .lineToLinearHeading(endPosRedWarehouse)
+                .build();
 
         waitForStart();
 
@@ -225,23 +230,23 @@ public class ShinyNewAutonomous extends LinearOpMode {
         spinnerRed(0.2);
         sleep(5000);
         spinnerEnd();
-        drive.followTrajectory(red3);
+        drive.followTrajectory(red2);
     }
     public void redWarehouseWithFreight(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Trajectory red1 = drive.trajectoryBuilder(new Pose2d(-41, -63, Math.toRadians(-90)))
-                .lineToLinearHeading(duckSpinRed)
+        Trajectory red1 = drive.trajectoryBuilder(startPosRedWarehouse)
+                .lineToLinearHeading(freightRedWareHouse)
                 .build();
 
         Trajectory red3 = drive.trajectoryBuilder(red1.end())
-                .lineToLinearHeading(new Pose2d(new Vector2d(-63, -37), Math.toRadians(180)))
+                .lineToLinearHeading(redIntermediatePoint2)
                 .build();
 
 
         waitForStart();
 
         if (isStopRequested()) return;
-        drive.setPoseEstimate(new Pose2d(-41, -63, Math.toRadians(-90)));
+        drive.setPoseEstimate(startPosRedWarehouse);
         drive.followTrajectory(red1);
         spinnerRed(0.2);
         sleep(5000);
