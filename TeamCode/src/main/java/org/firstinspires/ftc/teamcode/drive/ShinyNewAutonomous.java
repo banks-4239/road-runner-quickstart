@@ -24,11 +24,7 @@ import java.util.List;
 public class ShinyNewAutonomous extends LinearOpMode {
 
     RobotReference rb = new RobotReference();
-
     
-    
-    //static Pose2d START_POSE = new Pose2d(-41, -62, Math.toRadians(90));
-
     //Blue Poses
     Pose2d duckSpinBlue = new Pose2d(-60,56.5, Math.toRadians(90));
     Pose2d blueStorageUnit = new Pose2d(-63, 37, Math.toRadians(0));
@@ -247,7 +243,36 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
     }
     public void blueWarehouseWithFreight(){
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Trajectory blue1 = drive.trajectoryBuilder(startPosBlueWarehouse)
+                .lineToLinearHeading(freightBlueWarehouse)
+                .build();
 
+        Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
+                .lineToLinearHeading(blueIntermediate2)
+                .build();
+
+        Trajectory blue3 = drive.trajectoryBuilder(blue2.end())
+                .lineToLinearHeading(blueIntermediate3)
+                .build();
+
+        Trajectory blue4 = drive.trajectoryBuilder(blue3.end())
+                .lineToLinearHeading(blueIntermediate4)
+                .build();
+
+        Trajectory blue5 = drive.trajectoryBuilder(blue4.end())
+                .lineToLinearHeading(endPosBlueWarehouse)
+                .build();
+
+        waitForStart();
+        
+        if (isStopRequested()) return;
+        drive.setPoseEstimate(startPosBlueWarehouse);
+        drive.followTrajectory(blue1);
+        drive.followTrajectory(blue2);
+        drive.followTrajectory(blue3);
+        drive.followTrajectory(blue4);
+        drive.followTrajectory(blue5);
     }
     public void blueWarehouseWithNoFreight(){
 
