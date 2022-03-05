@@ -29,10 +29,21 @@ public class ShinyNewAutonomous extends LinearOpMode {
     
     //static Pose2d START_POSE = new Pose2d(-41, -62, Math.toRadians(90));
 
-
-
-    Pose2d duckSpinRed = new Pose2d(-60,-56.1, Math.toRadians(-90));
+    //Blue Poses
     Pose2d duckSpinBlue = new Pose2d(-60,56.1, Math.toRadians(90));
+
+    //Red Poses
+    Pose2d duckSpinRed = new Pose2d(-60,-56.1, Math.toRadians(-90));
+    Pose2d redStorageUnit = new Pose2d(-63, -37, Math.toRadians(0));
+    Pose2d freightRedDuck = new Pose2d(-33, -24, Math.toRadians(0));
+    Pose2d startPosRedDuck = new Pose2d(-41,63, Math.toRadians(-90));
+    Pose2d startPosRedWarehouse = new Pose2d(7, -63, Math.toRadians(-90));
+    Pose2d freightRedWareHouse = new Pose2d(-12, -45, Math.toRadians(90));
+    Pose2d endPosRedWarehouse = new Pose2d(65, -38, Math.toRadians(90));
+    Pose2d intermediatePoint1 = new Pose2d(-33, -65, Math.toRadians(0));
+    Pose2d intermediatePoint2 = new Pose2d(7, -65, Math.toRadians(0));
+    Pose2d intermediatePoint3 = new Pose2d(38, -65, Math.toRadians(0));
+    Pose2d intermediatePoint4 = new Pose2d(38, -38, Math.toRadians(0));
 
     public int hubNum;
 
