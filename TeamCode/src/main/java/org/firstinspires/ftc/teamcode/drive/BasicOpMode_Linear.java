@@ -155,27 +155,27 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
                 if (facingFront) {
                     if (fast) {
-                        rb.leftFrontDrive.setPower(moveY + rotate + moveX);
-                        rb.rightFrontDrive.setPower(moveY - rotate - moveX);
-                        rb.rightBackDrive.setPower(moveY - rotate + moveX);
-                        rb.leftBackDrive.setPower(moveY + rotate - moveX);
+                        rb.leftFrontDrive.setPower (moveY + rotate - moveX);
+                        rb.rightFrontDrive.setPower(moveY - rotate + moveX);
+                        rb.rightBackDrive.setPower (moveY - rotate - moveX);
+                        rb.leftBackDrive.setPower  (moveY + rotate + moveX);
                     } else {
-                        rb.leftFrontDrive.setPower(((moveY / 2) + (rotate / 1.5) + (moveX / 2)));
-                        rb.rightFrontDrive.setPower(((moveY / 2) - (rotate / 1.5) - (moveX / 2)));
-                        rb.rightBackDrive.setPower(((moveY / 2) - (rotate / 1.5) + (moveX / 2)));
-                        rb.leftBackDrive.setPower(((moveY / 2) + (rotate / 1.5) - (moveX / 2)));
+                        rb.leftFrontDrive.setPower (((moveY / 2) + (rotate / 1.5) - (moveX / 2)));
+                        rb.rightFrontDrive.setPower(((moveY / 2) - (rotate / 1.5) + (moveX / 2)));
+                        rb.rightBackDrive.setPower (((moveY / 2) - (rotate / 1.5) - (moveX / 2)));
+                        rb.leftBackDrive.setPower  (((moveY / 2) + (rotate / 1.5) + (moveX / 2)));
                     }
                 } else {
                     if (fast) {
-                        rb.leftFrontDrive.setPower(-moveY + rotate - moveX);
-                        rb.rightFrontDrive.setPower(-moveY - rotate + moveX);
-                        rb.rightBackDrive.setPower(-moveY - rotate - moveX);
-                        rb.leftBackDrive.setPower(-moveY + rotate + moveX);
+                        rb.leftFrontDrive.setPower (-moveY + rotate + moveX);
+                        rb.rightFrontDrive.setPower(-moveY - rotate - moveX);
+                        rb.rightBackDrive.setPower (-moveY - rotate + moveX);
+                        rb.leftBackDrive.setPower  (-moveY + rotate - moveX);
                     } else {
-                        rb.leftFrontDrive.setPower((-(moveY / 2) + (rotate / 1.5) - (moveX / 2)));
-                        rb.rightFrontDrive.setPower((-(moveY / 2) - (rotate / 1.5) + (moveX / 2)));
-                        rb.rightBackDrive.setPower((-(moveY / 2) - (rotate / 1.5) - (moveX / 2)));
-                        rb.leftBackDrive.setPower((-(moveY / 2) + (rotate / 1.5    ) + (moveX / 2)));
+                        rb.leftFrontDrive.setPower ((-(moveY / 2) + (rotate / 1.5) + (moveX / 2)));
+                        rb.rightFrontDrive.setPower((-(moveY / 2) - (rotate / 1.5) - (moveX / 2)));
+                        rb.rightBackDrive.setPower ((-(moveY / 2) - (rotate / 1.5) + (moveX / 2)));
+                        rb.leftBackDrive.setPower  ((-(moveY / 2) + (rotate / 1.5) - (moveX / 2)));
                     }
                 }
 

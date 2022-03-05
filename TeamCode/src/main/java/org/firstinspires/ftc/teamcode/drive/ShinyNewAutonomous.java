@@ -223,11 +223,20 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .build();
 
         Trajectory red2 = drive.trajectoryBuilder(red1.end())
-                .splineToSplineHeading(redIntermediate2, Math.toRadians(0))
-                .splineToSplineHeading(redIntermediate3, Math.toRadians(0))
-                .splineToSplineHeading(redIntermediate4, Math.toRadians(0))
-                //.lineToLinearHeading(endPosRedWarehouse)
-                .build();//edit when i return mwahahahahahaha
+                .lineToLinearHeading(redIntermediate2)
+                .build();
+
+        Trajectory red3 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(redIntermediate3)
+                .build();
+
+        Trajectory red4 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(redIntermediate4)
+                .build();
+
+        Trajectory red5 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(endPosRedWarehouse)
+                .build();
 
 
         waitForStart();
@@ -236,6 +245,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.setPoseEstimate(startPosRedWarehouse);
         drive.followTrajectory(red1);
         drive.followTrajectory(red2);
+        drive.followTrajectory(red3);
+        drive.followTrajectory(red4);
+        drive.followTrajectory(red5);
     }
     public void redWarehouseWithNoFreight(){
 
