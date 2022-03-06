@@ -32,7 +32,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
     Pose2d freightBlueWarehouse = new Pose2d(-12, 45, Math.toRadians(-90));
     Pose2d startPosBlueDuck = new Pose2d(-41, 63.5, Math.toRadians(90));
     Pose2d startPosBlueWarehouse = new Pose2d(7, 63.5, Math.toRadians(90));
-    Pose2d endPosBlueWarehouse = new Pose2d(65.4, 38, Math.toRadians(-90));
+    Pose2d endPosBlueWarehouse = new Pose2d(65.4, 36, Math.toRadians(-90));
     Pose2d blueIntermediate1 = new Pose2d(-33, 65.4, Math.toRadians(0));
     Pose2d blueIntermediate2 = new Pose2d(7, 65.4, Math.toRadians(0));
     Pose2d blueIntermediate3 = new Pose2d(38, 65.4, Math.toRadians(0));
@@ -45,7 +45,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
     Pose2d freightRedWarehouse = new Pose2d(-12, -45, Math.toRadians(90));
     Pose2d startPosRedDuck = new Pose2d(-41,63.5, Math.toRadians(-90));
     Pose2d startPosRedWarehouse = new Pose2d(7, -63.5, Math.toRadians(-90));
-    Pose2d endPosRedWarehouse = new Pose2d(65.4, -38, Math.toRadians(90));
+    Pose2d endPosRedWarehouse = new Pose2d(65.4, -36, Math.toRadians(90));
     Pose2d redIntermediate1 = new Pose2d(-33, -65.4, Math.toRadians(0));
     Pose2d redIntermediate2 = new Pose2d(7, -65.4, Math.toRadians(0));
     Pose2d redIntermediate3 = new Pose2d(38, -65.4, Math.toRadians(0));
@@ -381,7 +381,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         switch (hubNum){
             case 2:
                 return drive.trajectoryBuilder(pose)
-                        .lineToLinearHeading(freightRedWarehouse)
+                        .lineToLinearHeading(new Pose2d(freightRedWarehouse.getX(), freightRedWarehouse.getY(), freightRedWarehouse.getHeading()))
                         .build();
             case 3:
                 return drive.trajectoryBuilder(pose)

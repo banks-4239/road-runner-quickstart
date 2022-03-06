@@ -151,8 +151,8 @@ public class RobotReference
 
     String[] settings = {
             "",
-            "Duck Freight",
-            "Duck No Freight",
+            "Duck To Storage Unit",
+            "Duck To Warehouse",
             "Warehouse Freight",
             ""};
 
