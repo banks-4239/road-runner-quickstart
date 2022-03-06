@@ -37,19 +37,21 @@ public class ShinyNewAutonomous extends LinearOpMode {
     Pose2d blueIntermediate2 = new Pose2d(7, 65.4, Math.toRadians(0));
     Pose2d blueIntermediate3 = new Pose2d(38, 65.4, Math.toRadians(0));
     Pose2d blueIntermediate4 = new Pose2d(38, 38, Math.toRadians(0));
+    Pose2d blueIntermediateDuck = new Pose2d(-58, 26, Math.toRadians(45));
 
     //Red Poses
     Pose2d duckSpinRed = new Pose2d(-60,-56.5, Math.toRadians(-90));
     Pose2d redStorageUnit = new Pose2d(-63, -37, Math.toRadians(0));
     Pose2d freightRedDuck = new Pose2d(-33, -24, Math.toRadians(0));
     Pose2d freightRedWarehouse = new Pose2d(-12, -45, Math.toRadians(90));
-    Pose2d startPosRedDuck = new Pose2d(-41,63.5, Math.toRadians(-90));
+    Pose2d startPosRedDuck = new Pose2d(-41,-63.5, Math.toRadians(-90));
     Pose2d startPosRedWarehouse = new Pose2d(7, -63.5, Math.toRadians(-90));
     Pose2d endPosRedWarehouse = new Pose2d(65.4, -36, Math.toRadians(90));
     Pose2d redIntermediate1 = new Pose2d(-33, -65.4, Math.toRadians(0));
     Pose2d redIntermediate2 = new Pose2d(7, -65.4, Math.toRadians(0));
     Pose2d redIntermediate3 = new Pose2d(38, -65.4, Math.toRadians(0));
     Pose2d redIntermediate4 = new Pose2d(38, -38, Math.toRadians(0));
+    Pose2d redIntermediateDuck = new Pose2d(-58, -26, Math.toRadians(-45));
 
     public int hubNum;
 
