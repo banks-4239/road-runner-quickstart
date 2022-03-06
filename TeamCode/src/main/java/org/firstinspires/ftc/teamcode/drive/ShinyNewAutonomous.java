@@ -113,7 +113,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
                     rb.autoMode = rb.onSetting;
                 } else {
                     rb.choosingAuto = true;
-                    rb.autoMode = rb.onSetting + 4;
+                    rb.autoMode = rb.onSetting + 3;
                 }
             }
             hubNum = getElement();
@@ -223,9 +223,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(redIntermediate4)
                 .build();
 
-        Trajectory red6 = drive.trajectoryBuilder(red5.end())
-                .lineToLinearHeading(endPosRedWarehouse)
-                .build();
+        //Trajectory red6 = drive.trajectoryBuilder(red5.end())
+        //        .lineToLinearHeading(endPosRedWarehouse)
+        //        .build();
 
         waitForStart();
 
@@ -236,7 +236,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red3);
         drive.followTrajectory(red4);
         drive.followTrajectory(red5);
-        drive.followTrajectory(red6);
+        //drive.followTrajectory(red6);
 
     }
     public void redWarehouseWithFreight(){
@@ -260,9 +260,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(redIntermediate4)
                 .build();
 
-        Trajectory red5 = drive.trajectoryBuilder(red4.end())
-                .lineToLinearHeading(endPosRedWarehouse)
-                .build();
+        //Trajectory red5 = drive.trajectoryBuilder(red4.end())
+        //        .lineToLinearHeading(endPosRedWarehouse)
+        //        .build();
 
 
         waitForStart();
@@ -273,7 +273,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
         drive.followTrajectory(red4);
-        drive.followTrajectory(red5);
+        //drive.followTrajectory(red5);
     }
 
 
@@ -324,9 +324,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(blueIntermediate4)
                 .build();
 
-        Trajectory blue6 = drive.trajectoryBuilder(blue5.end())
-                .lineToLinearHeading(endPosBlueWarehouse)
-                .build();
+        //Trajectory blue6 = drive.trajectoryBuilder(blue5.end())
+        //        .lineToLinearHeading(endPosBlueWarehouse)
+        //        .build();
 
         waitForStart();
 
@@ -337,7 +337,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(blue3);
         drive.followTrajectory(blue4);
         drive.followTrajectory(blue5);
-        drive.followTrajectory(blue6);
+        //drive.followTrajectory(blue6);
 
     }
     public void blueWarehouseWithFreight(){
@@ -358,9 +358,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(blueIntermediate4)
                 .build();
 
-        Trajectory blue5 = drive.trajectoryBuilder(blue4.end())
-                .lineToLinearHeading(endPosBlueWarehouse)
-                .build();
+        //Trajectory blue5 = drive.trajectoryBuilder(blue4.end())
+        //        .lineToLinearHeading(endPosBlueWarehouse)
+        //        .build();
 
         waitForStart();
         
@@ -370,7 +370,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(blue2);
         drive.followTrajectory(blue3);
         drive.followTrajectory(blue4);
-        drive.followTrajectory(blue5);
+        //drive.followTrajectory(blue5);
     }
 
 
