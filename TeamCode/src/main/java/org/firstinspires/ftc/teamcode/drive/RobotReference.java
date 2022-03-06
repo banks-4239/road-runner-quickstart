@@ -154,7 +154,6 @@ public class RobotReference
             "Duck Freight",
             "Duck No Freight",
             "Warehouse Freight",
-            "Warehouse No Freight",
             ""};
 
     String TFOD_MODEL_ASSET = "FreightFrenzy_DM.tflite";

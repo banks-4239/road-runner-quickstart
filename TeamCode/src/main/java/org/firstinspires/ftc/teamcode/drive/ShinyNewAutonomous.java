@@ -93,7 +93,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
             }
 
             if (gamepad1.dpad_down) {
-                if (rb.onSetting < 4 && !rb.settingButtonDown2) {
+                if (rb.onSetting < 3 && !rb.settingButtonDown2) {
                     rb.onSetting++;
                 }
                 rb.settingButtonDown2 = true;
@@ -139,22 +139,14 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 redWarehouseWithFreight();
                 break;
             case 4:
-                redWarehouseWithNoFreight();
-                break;
-            case 5:
                 blueDuckWithFreight();
                 //flipHub();
-                break;
-            case 6:
+            case 5:
                 blueDuckWithNoFreight();
                 //flipHub();
                 break;
-            case 7:
+            case 6:
                 blueWarehouseWithFreight();
-                //flipHub();
-                break;
-            case 8:
-                blueWarehouseWithNoFreight();
                 //flipHub();
                 break;
 
@@ -192,9 +184,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(duckSpinRed)
                 .build();
 
-        Trajectory red2 = drive.trajectoryBuilder(red1.end())
-                .lineToLinearHeading(new Pose2d(new Vector2d(-33, -24), Math.toRadians(0)))
-                .build();
+        Trajectory red2 = switchTrajRedDuck(red1.end());
 
         Trajectory red3 = drive.trajectoryBuilder(red2.end())
                 .lineToLinearHeading(new Pose2d(new Vector2d(-63, -37), Math.toRadians(180)))
@@ -248,9 +238,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red4);
         drive.followTrajectory(red5);
     }
-    public void redWarehouseWithNoFreight(){
 
-    }
     public void blueDuckWithFreight(){
 
     }
@@ -289,12 +277,31 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(blue4);
         drive.followTrajectory(blue5);
     }
-    public void blueWarehouseWithNoFreight(){
 
+
+    public Trajectory switchTrajRedDuck(Pose2d pose){
+
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+        switch (hubNum){
+            case 2:
+                return drive.trajectoryBuilder(pose)
+                        .lineToLinearHeading(freightRedWarehouse)
+                        .build();
+            case 3:
+                return drive.trajectoryBuilder(pose)
+                        .lineToLinearHeading(freightRedWarehouse)
+                        .build();
+            default:
+                return drive.trajectoryBuilder(pose)
+                        .lineToLinearHeading(freightRedWarehouse)
+                        .build();
+        }
     }
 
-    //public Trajectory switchTraj(){
-    //}
+
+
+
 
 
 
