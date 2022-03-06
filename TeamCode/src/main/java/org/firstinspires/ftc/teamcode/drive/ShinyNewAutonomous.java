@@ -142,11 +142,11 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 redWarehouseWithNoFreight();
                 break;
             case 5:
-                blueDuckWithFreight();
+                blueDuckToStorageUnit();
                 //flipHub();
                 break;
             case 6:
-                blueDuckWithNoFreight();
+                blueDuckToWarehouse();
                 //flipHub();
                 break;
             case 7:
@@ -188,28 +188,63 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
     public void redDuckToStorageUnit(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Trajectory red1 = drive.trajectoryBuilder(new Pose2d(-41, -63, Math.toRadians(-90)))
+        Trajectory red1 = drive.trajectoryBuilder(startPosRedDuck)
                 .lineToLinearHeading(duckSpinRed)
                 .build();
 
         Trajectory red2 = drive.trajectoryBuilder(red1.end())
-                .lineToLinearHeading(new Pose2d(new Vector2d(-33, -24), Math.toRadians(0)))
+                .lineToLinearHeading(freightRedDuck)
                 .build();
 
         Trajectory red3 = drive.trajectoryBuilder(red2.end())
-                .lineToLinearHeading(new Pose2d(new Vector2d(-63, -37), Math.toRadians(180)))
+                .lineToLinearHeading(redStorageUnit)
                 .build();
 
 
         waitForStart();
 
         if (isStopRequested()) return;
-        drive.setPoseEstimate(new Pose2d(-41, -63, Math.toRadians(-90)));
+        drive.setPoseEstimate(startPosRedDuck);
         drive.followTrajectory(red1);
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
     }
     public void redDuckToWarehouse(){
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Trajectory red1 = drive.trajectoryBuilder(startPosRedDuck)
+                .lineToLinearHeading(duckSpinRed)
+                .build();
+
+        Trajectory red2 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(freightRedDuck)
+                .build();
+
+        Trajectory red3 = drive.trajectoryBuilder(red2.end())
+                .lineToLinearHeading(redIntermediate1)
+                .build();
+
+        Trajectory red4 = drive.trajectoryBuilder(red3.end())
+                .lineToLinearHeading(redIntermediate3)
+                .build();
+
+        Trajectory red5 = drive.trajectoryBuilder(red4.end())
+                .lineToLinearHeading(redIntermediate4)
+                .build();
+
+        Trajectory red6 = drive.trajectoryBuilder(red5.end())
+                .lineToLinearHeading(endPosRedWarehouse)
+                .build();
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+        drive.setPoseEstimate(startPosRedDuck);
+        drive.followTrajectory(red1);
+        drive.followTrajectory(red2);
+        drive.followTrajectory(red3);
+        drive.followTrajectory(red4);
+        drive.followTrajectory(red5);
+        drive.followTrajectory(red6);
 
     }
     public void redWarehouseWithFreight(){
@@ -251,10 +286,66 @@ public class ShinyNewAutonomous extends LinearOpMode {
     public void redWarehouseWithNoFreight(){
 
     }
-    public void blueDuckWithFreight(){
+    public void blueDuckToStorageUnit(){
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Trajectory blue1 = drive.trajectoryBuilder(startPosBlueDuck)
+                .lineToLinearHeading(duckSpinBlue)
+                .build();
+
+        Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
+                .lineToLinearHeading(freightBlueDuck)
+                .build();
+
+        Trajectory blue3 = drive.trajectoryBuilder(blue2.end())
+                .lineToLinearHeading(blueStorageUnit)
+                .build();
+
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+        drive.setPoseEstimate(startPosRedDuck);
+        drive.followTrajectory(blue1);
+        drive.followTrajectory(blue2);
+        drive.followTrajectory(blue3);
 
     }
-    public void blueDuckWithNoFreight(){
+    public void blueDuckToWarehouse(){
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Trajectory blue1 = drive.trajectoryBuilder(startPosBlueDuck)
+                .lineToLinearHeading(duckSpinBlue)
+                .build();
+
+        Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
+                .lineToLinearHeading(freightBlueDuck)
+                .build();
+
+        Trajectory blue3 = drive.trajectoryBuilder(blue2.end())
+                .lineToLinearHeading(blueIntermediate1)
+                .build();
+
+        Trajectory blue4 = drive.trajectoryBuilder(blue3.end())
+                .lineToLinearHeading(blueIntermediate3)
+                .build();
+
+        Trajectory blue5 = drive.trajectoryBuilder(blue4.end())
+                .lineToLinearHeading(blueIntermediate4)
+                .build();
+
+        Trajectory blue6 = drive.trajectoryBuilder(blue5.end())
+                .lineToLinearHeading(endPosBlueWarehouse)
+                .build();
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+        drive.setPoseEstimate(startPosBlueDuck);
+        drive.followTrajectory(blue1);
+        drive.followTrajectory(blue2);
+        drive.followTrajectory(blue3);
+        drive.followTrajectory(blue4);
+        drive.followTrajectory(blue5);
+        drive.followTrajectory(blue6);
 
     }
     public void blueWarehouseWithFreight(){
