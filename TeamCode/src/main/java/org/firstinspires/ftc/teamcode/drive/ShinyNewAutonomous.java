@@ -258,7 +258,6 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red4);
         //drive.followTrajectory(red5);
     }
-
     public void blueDuckToStorageUnit(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Trajectory blue1 = drive.trajectoryBuilder(startPosBlueDuck)
