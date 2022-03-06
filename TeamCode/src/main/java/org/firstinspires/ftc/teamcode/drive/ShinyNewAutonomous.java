@@ -161,11 +161,17 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(duckSpinRed)
                 .build();
 
+        Trajectory red2 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(redIntermediateDuck)
+                .build();
 
-        Trajectory red2 = switchTrajRedDuck(red1.end());
+        Trajectory red3 = switchTrajRedDuck(freightRedDuck);
 
+        Trajectory red4 = drive.trajectoryBuilder(red3.end())
+                .lineToLinearHeading(redIntermediateDuck)
+                .build();
 
-        Trajectory red3 = drive.trajectoryBuilder(red2.end())
+        Trajectory red5 = drive.trajectoryBuilder(red4.end())
                 .lineToLinearHeading(redStorageUnit)
                 .build();
 
@@ -180,6 +186,8 @@ public class ShinyNewAutonomous extends LinearOpMode {
         spinnerEnd();
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
+        drive.followTrajectory(red4);
+        drive.followTrajectory(red5);
     }
     public void redDuckToWarehouse(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
