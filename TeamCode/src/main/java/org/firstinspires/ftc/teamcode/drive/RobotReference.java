@@ -126,6 +126,10 @@ public class RobotReference
 
     boolean settingButtonDown1 = false;
     boolean settingButtonDown2 = false;
+    boolean settingButtonDownA = false;
+
+
+    boolean onCompiled = false;
 
 
     double SPINNER_SPEED = .2;
