@@ -227,6 +227,8 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 break;
         }
 
+        sleep(5200);
+        spinnerEnd();
         drive.followTrajectory(red4);
         drive.followTrajectory(red5);
     }
@@ -364,7 +366,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         if (isStopRequested()) return;
         drive.setPoseEstimate(startPosRedDuck);
         drive.followTrajectory(blue1);
-        spinnerBlue(0.2);
+        spinnerBlue(0.3);
         sleep(5200);
         spinnerEnd();
         drive.followTrajectory(blue2);
@@ -404,7 +406,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         if (isStopRequested()) return;
         drive.setPoseEstimate(startPosBlueDuck);
         drive.followTrajectory(blue1);
-        spinnerBlue(0.2);
+        spinnerBlue(0.3);
         sleep(5200);
         spinnerEnd();
         drive.followTrajectory(blue2);
