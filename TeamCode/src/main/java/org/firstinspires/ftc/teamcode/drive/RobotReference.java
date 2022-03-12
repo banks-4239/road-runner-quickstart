@@ -143,7 +143,7 @@ public class RobotReference
 
     
 
-    boolean redOrBlue = true;
+    boolean isRed = true;
 
     int hubNum = 3;
 
@@ -156,7 +156,7 @@ public class RobotReference
     String[] settings = {
             "",
             "Duck To Storage Unit",
-            "Duck To Warehouse",
+            "Duck To Warehouse (DON'T USE!)",
             "Warehouse Freight",
             ""};
 

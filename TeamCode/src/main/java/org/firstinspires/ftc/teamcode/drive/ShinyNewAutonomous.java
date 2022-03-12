@@ -7,17 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.onbotjava.handlers.objbuild.WaitForBuild;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.drive.RobotReference;
 
 import java.util.List;
-
-import kotlin.random.Random;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -27,13 +23,13 @@ import kotlin.random.Random;
 public class ShinyNewAutonomous extends LinearOpMode {
 
     RobotReference rb = new RobotReference();
-    
+
     //Blue Poses
-    Vector2d vectorDuckSpinBlue = new Vector2d(-60,56.7);
-    Pose2d duckSpinBlue = new Pose2d(-60,56.7, Math.toRadians(90));
+    Vector2d vectorDuckSpinBlue = new Vector2d(-60, 56.7);
+    Pose2d duckSpinBlue = new Pose2d(-60, 56.7, Math.toRadians(90));
     Pose2d blueStorageUnit = new Pose2d(-63, 37, Math.toRadians(0));
     Pose2d freightBlueDuck = new Pose2d(-33, 24, Math.toRadians(0));
-    Pose2d freightBlueWarehouse = new Pose2d(-12, 45, Math.toRadians(-90));
+    Pose2d freightBlueWarehouse = new Pose2d(-12, 46, Math.toRadians(-90));
     Pose2d startPosBlueDuck = new Pose2d(-41, 63.5, Math.toRadians(90));
     Pose2d startPosBlueWarehouse = new Pose2d(7, 63.5, Math.toRadians(90));
     Pose2d endPosBlueWarehouse = new Pose2d(65.4, 36, Math.toRadians(-90));
@@ -46,12 +42,12 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
     //Red Poses
 
-    Vector2d vectorDuckSpinRed = new Vector2d(-60,-56.7);
+    Vector2d vectorDuckSpinRed = new Vector2d(-60, -56.7);
     Pose2d duckSpinRed = new Pose2d(vectorDuckSpinRed, Math.toRadians(-90));
     Pose2d redStorageUnit = new Pose2d(-63, -37, Math.toRadians(0));
     Pose2d freightRedDuck = new Pose2d(-33, -24, Math.toRadians(0));
-    Pose2d freightRedWarehouse = new Pose2d(-12, -45, Math.toRadians(90));
-    Pose2d startPosRedDuck = new Pose2d(-41,-63.5, Math.toRadians(-90));
+    Pose2d freightRedWarehouse = new Pose2d(-12, -46, Math.toRadians(90));
+    Pose2d startPosRedDuck = new Pose2d(-41, -63.5, Math.toRadians(-90));
     Pose2d startPosRedWarehouse = new Pose2d(7, -63.5, Math.toRadians(-90));
     Pose2d endPosRedWarehouse = new Pose2d(65.4, -36, Math.toRadians(90));
     Pose2d redIntermediate1 = new Pose2d(-33, -65.4, Math.toRadians(0));
@@ -74,7 +70,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         if (rb.tfod != null) {
             rb.tfod.activate();
 
-            rb.tfod.setZoom(1, 16.0/9.0);
+            rb.tfod.setZoom(1, 16.0 / 9.0);
         }
         telemetry.addData("Please choose a mode!", "up - redDuck, right - redWarehouse, left - blueDuck, down - blueWarehouse");
         telemetry.update();
@@ -83,7 +79,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
 
             telemetry.addData("Please choose a setting", "");
-            if (rb.redOrBlue) {
+            if (rb.isRed) {
                 telemetry.addData("Red", rb.settings[rb.onSetting - 1]);
                 telemetry.addData("Red", ">" + rb.settings[rb.onSetting]);
                 telemetry.addData("Red", rb.settings[rb.onSetting + 1]);
@@ -114,13 +110,13 @@ public class ShinyNewAutonomous extends LinearOpMode {
             }
 
             if (gamepad1.dpad_left) {
-                rb.redOrBlue = true;
+                rb.isRed = true;
             } else if (gamepad1.dpad_right) {
-                rb.redOrBlue = false;
+                rb.isRed = false;
             }
 
             if (isStarted()) {
-                if (rb.redOrBlue) {
+                if (rb.isRed) {
                     rb.choosingAuto = true;
                     rb.autoMode = rb.onSetting;
                 } else {
@@ -135,6 +131,8 @@ public class ShinyNewAutonomous extends LinearOpMode {
         }
         waitForStart();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        telemetry.addData("", rb.autoMode);
+
         switch (rb.autoMode) {
             case 1:
                 redDuckToStorageUnit();
@@ -161,8 +159,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
     }
 
-
-    public void redDuckToStorageUnit(){
+    public void redDuckToStorageUnit() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Trajectory red1 = drive.trajectoryBuilder(startPosRedDuck)
                 .lineToLinearHeading(duckSpinRed)
@@ -172,7 +169,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
                 .lineToLinearHeading(redIntermediateDuck)
                 .build();
 
-        Trajectory red3 = switchTrajRedDuck(red2.end());
+        Trajectory red3 = switchTraj(red2.end(), freightRedDuck, -2.5, 0, true);
 
         Trajectory red4 = drive.trajectoryBuilder(red3.end())
                 .lineToLinearHeading(redIntermediateDuck)
@@ -194,45 +191,43 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
 
-        switch(hubNum){
+        switch (hubNum) {
             default:
                 //scoring
-                liftArm(rb.LIFT_2,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_2);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
             case 2:
                 //scoring
-                liftArm(rb.LIFT_6,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_6);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
             case 3:
                 //scoring
-                liftArm(rb.LIFT_5,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_5);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
         }
 
-        sleep(5200);
-        spinnerEnd();
         drive.followTrajectory(red4);
         drive.followTrajectory(red5);
     }
-    public void redDuckToWarehouse(){
+    public void redDuckToWarehouse() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Trajectory red1 = drive.trajectoryBuilder(startPosRedDuck)
                 .lineToLinearHeading(duckSpinRed)
@@ -240,7 +235,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         Trajectory red2 = drive.trajectoryBuilder(red1.end())
                 .lineToLinearHeading(redIntermediateDuck)
                 .build();
-        Trajectory red3 = (switchTrajRedDuck(red2.end()));
+        Trajectory red3 = (switchTraj(red2.end(), freightRedDuck, -1, 0, true));
 
         Trajectory red4 = drive.trajectoryBuilder(red3.end())
                 .lineTo(vectorRedIntermediateDuck)
@@ -270,35 +265,35 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
 
-        switch(hubNum){
+        switch (hubNum) {
             default:
                 //scoring
-                liftArm(rb.LIFT_2,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_2);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
             case 2:
                 //scoring
-                liftArm(rb.LIFT_6,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_6);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
             case 3:
                 //scoring
-                liftArm(rb.LIFT_5,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(rb.LIFT_5);
                 takeOut(1);
                 sleep(500);
                 intakeOff();
-                liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
                 waitForArm(0);
                 break;
         }
@@ -310,14 +305,11 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.followTrajectory(red8);
 
     }
-    public void redWarehouseWithFreight(){
+    public void redWarehouseWithFreight() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
 
-
-        Trajectory red1 = drive.trajectoryBuilder(startPosRedWarehouse)
-                .lineToLinearHeading(freightRedWarehouse)
-                .build();
+        Trajectory red1 = switchTraj(startPosRedWarehouse, freightRedWarehouse, 0, -1, true);
 
         Trajectory red2 = drive.trajectoryBuilder(red1.end())
                 .lineToLinearHeading(redIntermediate2)
@@ -341,22 +333,60 @@ public class ShinyNewAutonomous extends LinearOpMode {
         if (isStopRequested()) return;
         drive.setPoseEstimate(startPosRedWarehouse);
         drive.followTrajectory(red1);
+        switch (hubNum) {
+            default:
+                //scoring
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_2);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 2:
+                //scoring
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_6);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 3:
+                //scoring
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_5);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+        }
         drive.followTrajectory(red2);
         drive.followTrajectory(red3);
         drive.followTrajectory(red4);
         //drive.followTrajectory(red5);
     }
-    public void blueDuckToStorageUnit(){
+    public void blueDuckToStorageUnit() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Trajectory blue1 = drive.trajectoryBuilder(startPosBlueDuck)
+        Trajectory red1 = drive.trajectoryBuilder(startPosBlueDuck)
                 .lineToLinearHeading(duckSpinBlue)
                 .build();
 
-        Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
-                .lineToLinearHeading(freightBlueDuck)
+        Trajectory red2 = drive.trajectoryBuilder(red1.end())
+                .lineToLinearHeading(blueIntermediateDuck)
                 .build();
 
-        Trajectory blue3 = drive.trajectoryBuilder(blue2.end())
+        Trajectory red3 = switchTraj(red2.end(), freightBlueDuck, -1, 0, false);
+
+        Trajectory red4 = drive.trajectoryBuilder(red3.end())
+                .lineToLinearHeading(blueIntermediateDuck)
+                .build();
+
+        Trajectory red5 = drive.trajectoryBuilder(red4.end())
                 .lineToLinearHeading(blueStorageUnit)
                 .build();
 
@@ -364,16 +394,51 @@ public class ShinyNewAutonomous extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
-        drive.setPoseEstimate(startPosRedDuck);
-        drive.followTrajectory(blue1);
+        drive.setPoseEstimate(startPosBlueDuck);
+        drive.followTrajectory(red1);
         spinnerBlue(0.3);
-        sleep(5200);
+        sleep(4000);
         spinnerEnd();
-        drive.followTrajectory(blue2);
-        drive.followTrajectory(blue3);
+        drive.followTrajectory(red2);
+        drive.followTrajectory(red3);
 
+        switch (hubNum) {
+            default:
+                //scoring
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_6);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 2:
+                //scoring
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_5);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 3:
+                //scoring
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_2);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+        }
+
+        drive.followTrajectory(red4);
+        drive.followTrajectory(red5);
     }
-    public void blueDuckToWarehouse(){
+    public void blueDuckToWarehouse() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Trajectory blue1 = drive.trajectoryBuilder(startPosBlueDuck)
                 .lineToLinearHeading(duckSpinBlue)
@@ -381,9 +446,7 @@ public class ShinyNewAutonomous extends LinearOpMode {
         Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
                 .lineToLinearHeading(blueIntermediateDuck)
                 .build();
-        Trajectory blue3 = drive.trajectoryBuilder(blue2.end())
-                .lineToLinearHeading(freightRedDuck)
-                .build();
+        Trajectory blue3 = switchTraj(freightBlueDuck, freightBlueWarehouse, -1, 0, false);
         Trajectory blue4 = drive.trajectoryBuilder(blue3.end())
                 .lineTo(vectorBlueIntermediateDuck)
                 .build();
@@ -411,6 +474,38 @@ public class ShinyNewAutonomous extends LinearOpMode {
         spinnerEnd();
         drive.followTrajectory(blue2);
         drive.followTrajectory(blue3);
+        switch (hubNum) {
+            default:
+                //scoring
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_6);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 2:
+                //scoring
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_5);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 3:
+                //scoring
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_2);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+        }
         drive.followTrajectory(blue4);
         drive.followTrajectory(blue5);
         drive.followTrajectory(blue6);
@@ -419,11 +514,9 @@ public class ShinyNewAutonomous extends LinearOpMode {
         //drive.followTrajectory(blue9);
 
     }
-    public void blueWarehouseWithFreight(){
+    public void blueWarehouseWithFreight() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Trajectory blue1 = drive.trajectoryBuilder(startPosBlueWarehouse)
-                .lineToLinearHeading(freightBlueWarehouse)
-                .build();
+        Trajectory blue1 = switchTraj(startPosBlueWarehouse, freightBlueWarehouse, 0, 1, false);
 
         Trajectory blue2 = drive.trajectoryBuilder(blue1.end())
                 .lineToLinearHeading(blueIntermediate2)
@@ -442,39 +535,87 @@ public class ShinyNewAutonomous extends LinearOpMode {
         //        .build();
 
         waitForStart();
-        
+
         if (isStopRequested()) return;
         drive.setPoseEstimate(startPosBlueWarehouse);
         drive.followTrajectory(blue1);
+        switch (hubNum) {
+            default:
+                //scoring
+                liftArm(rb.LIFT_6, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_6);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 2:
+                //scoring
+                liftArm(rb.LIFT_5, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_5);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+            case 3:
+                //scoring
+                liftArm(rb.LIFT_2, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(rb.LIFT_2);
+                takeOut(1);
+                sleep(500);
+                intakeOff();
+                liftArm(rb.LIFT_0, rb.LIFT_ARM_ROTATE_PWR);
+                waitForArm(0);
+                break;
+        }
         drive.followTrajectory(blue2);
         drive.followTrajectory(blue3);
         drive.followTrajectory(blue4);
         //drive.followTrajectory(blue5);
     }
 
-    public Trajectory switchTrajRedDuck(Pose2d pose){
+
+
+
+
+    public Trajectory switchTraj(Pose2d start, Pose2d end, double xOffset, double yOffset, boolean side) {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        switch (hubNum){
-            case 2:
-                return drive.trajectoryBuilder(pose)
-                        .lineToLinearHeading(new Pose2d(freightRedDuck.getX() - 2, freightRedDuck.getY(), freightRedDuck.getHeading() + Math.toRadians(0)))
-                        .build();
-            case 3:
-                return drive.trajectoryBuilder(pose)
-                        .lineToLinearHeading(new Pose2d(freightRedDuck.getX(), freightRedDuck.getY(), freightRedDuck.getHeading() + Math.toRadians(0)))
-                        .build();
-            default:
-                return drive.trajectoryBuilder(pose)
-                        .lineToLinearHeading(new Pose2d(freightRedDuck.getX() - 1, freightRedDuck.getY(), freightRedDuck.getHeading() + Math.toRadians(180)))
-                        .build();
+        if (side) {
+            switch (hubNum) {
+                case 2:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX() + (xOffset * 2), end.getY() + (yOffset * 2), end.getHeading() + Math.toRadians(0)))
+                            .build();
+                case 3:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX(), end.getY(), end.getHeading() + Math.toRadians(0)))
+                            .build();
+                default:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX() + (xOffset * 1), end.getY() + (yOffset * 1), end.getHeading() + Math.toRadians(180)))
+                            .build();
+            }
+        } else {
+            switch (hubNum) {
+                case 2:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX(), end.getY(), end.getHeading() + Math.toRadians(0)))
+                            .build();
+                case 3:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX() + (xOffset * 1), end.getY() + (yOffset * 1), end.getHeading() + Math.toRadians(180)))
+                            .build();
+                default:
+                    return drive.trajectoryBuilder(start)
+                            .lineToLinearHeading(new Pose2d(end.getX() + (xOffset * 2), end.getY() + (yOffset * 2), end.getHeading() + Math.toRadians(0)))
+                            .build();
+            }
         }
     }
-
-
-
-
 
     public void spinnerRed(double speed) {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -494,18 +635,14 @@ public class ShinyNewAutonomous extends LinearOpMode {
         drive.spinnerR.setPower(0);
         drive.spinnerL.setPower(0);
     }
-
     public void liftArm(int ticks, double power) {
         rb.robotArm.setTargetPosition(ticks);
         rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rb.robotArm.setPower(power);
     }
-
     public void waitForArm(int ticks) {
-        while (!(rb.robotArm.getCurrentPosition() >= ticks - 100) || !(rb.robotArm.getCurrentPosition() <= ticks + 100))
-        {
-            if(rb.robotArm.getCurrentPosition() >= test)
-            {
+        while (!(rb.robotArm.getCurrentPosition() >= ticks - 100) || !(rb.robotArm.getCurrentPosition() <= ticks + 100)) {
+            if (rb.robotArm.getCurrentPosition() >= test) {
                 test = rb.robotArm.getCurrentPosition();
                 telemetry.addData("", test);
             }
@@ -514,18 +651,13 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
 
     }
-
     public void takeOut(double speed) {
         rb.intake.setPower(speed);
     }
-
     void intakeOff() {
         rb.intake.setPower(0);
     }
-
-
-
-    public int getElement(){
+    public int getElement() {
 
         if (rb.tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
@@ -542,27 +674,20 @@ public class ShinyNewAutonomous extends LinearOpMode {
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());*/
 
-                    if(updatedRecognitions.get(i).getLabel() != "Marker") {
+                    if (updatedRecognitions.get(i).getLabel() != "Marker") {
                         telemetry.addData("", updatedRecognitions.get(0).getLeft());
-                        if(updatedRecognitions.get(0).getLeft() < 180){
+                        if (updatedRecognitions.get(0).getLeft() < 180) {
                             return 1;
-                        }else{
+                        } else {
                             return 2;
                         }
                     }
 
 
-
-
-
-
                 }
-                if(updatedRecognitions.size() == 0){
+                if (updatedRecognitions.size() == 0) {
                     return 3;
                 }
-
-
-
 
 
             }
@@ -570,7 +695,6 @@ public class ShinyNewAutonomous extends LinearOpMode {
         }
         return hubNum;
     }
-
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -585,7 +709,6 @@ public class ShinyNewAutonomous extends LinearOpMode {
 
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
-
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -596,10 +719,6 @@ public class ShinyNewAutonomous extends LinearOpMode {
         rb.tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, rb.vuforia);
         rb.tfod.loadModelFromAsset(rb.TFOD_MODEL_ASSET, rb.LABELS);
     }
-
-
-
-
 
 
 }

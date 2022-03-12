@@ -104,6 +104,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         boolean cutscene = false;
 
+        double dpadMoveX = 0;
+        double dpadMoveY = 0;
+
 
 
         rb.activeGamepad1 = gamepad1;
@@ -141,6 +144,22 @@ public class BasicOpMode_Linear extends LinearOpMode {
             boolean takingIn = rb.activeGamepad1.a || rb.activeGamepad2.y;
             boolean takingOut = rb.activeGamepad1.b;
 
+            if(gamepad1.dpad_left){
+                dpadMoveX = -1;
+            }else if(gamepad1.dpad_right){
+                dpadMoveX = 1;
+            }else{
+                dpadMoveX = 0;
+            }
+
+            if(gamepad1.dpad_down){
+                dpadMoveY = -1;
+            }else if(gamepad1.dpad_up){
+                dpadMoveY = 1;
+            }else{
+                dpadMoveY = 0;
+            }
+
             double armUp = rb.activeGamepad1.right_trigger;
             double armDown = rb.activeGamepad1.left_trigger;
 
@@ -149,160 +168,160 @@ public class BasicOpMode_Linear extends LinearOpMode {
             boolean armMoving;
 
 
-                if (rb.activeGamepad1.back) {
-                    cutscene = true;
-                }
+            if (rb.activeGamepad1.back) {
+                cutscene = true;
+            }
 
-                if (facingFront) {
-                    if (fast) {
-                        rb.leftFrontDrive.setPower (moveY + rotate - moveX);
-                        rb.rightFrontDrive.setPower(moveY - rotate + moveX);
-                        rb.rightBackDrive.setPower (moveY - rotate - moveX);
-                        rb.leftBackDrive.setPower  (moveY + rotate + moveX);
-                    } else {
-                        rb.leftFrontDrive.setPower (((moveY / 2) + (rotate / 1.5) - (moveX / 2)));
-                        rb.rightFrontDrive.setPower(((moveY / 2) - (rotate / 1.5) + (moveX / 2)));
-                        rb.rightBackDrive.setPower (((moveY / 2) - (rotate / 1.5) - (moveX / 2)));
-                        rb.leftBackDrive.setPower  (((moveY / 2) + (rotate / 1.5) + (moveX / 2)));
-                    }
+            if (facingFront) {
+                if (fast) {
+                    rb.leftFrontDrive.setPower (moveY + rotate - moveX - dpadMoveX + dpadMoveY);
+                    rb.rightFrontDrive.setPower(moveY - rotate + moveX + dpadMoveX + dpadMoveY);
+                    rb.rightBackDrive.setPower (moveY - rotate - moveX - dpadMoveX + dpadMoveY);
+                    rb.leftBackDrive.setPower  (moveY + rotate + moveX + dpadMoveX + dpadMoveY);
                 } else {
-                    if (fast) {
-                        rb.leftFrontDrive.setPower (-moveY + rotate + moveX);
-                        rb.rightFrontDrive.setPower(-moveY - rotate - moveX);
-                        rb.rightBackDrive.setPower (-moveY - rotate + moveX);
-                        rb.leftBackDrive.setPower  (-moveY + rotate - moveX);
-                    } else {
-                        rb.leftFrontDrive.setPower ((-(moveY / 2) + (rotate / 1.5) + (moveX / 2)));
-                        rb.rightFrontDrive.setPower((-(moveY / 2) - (rotate / 1.5) - (moveX / 2)));
-                        rb.rightBackDrive.setPower ((-(moveY / 2) - (rotate / 1.5) + (moveX / 2)));
-                        rb.leftBackDrive.setPower  ((-(moveY / 2) + (rotate / 1.5) - (moveX / 2)));
-                    }
+                    rb.leftFrontDrive.setPower (((moveY / 2) + (rotate / 1.5) - (moveX / 2) - dpadMoveX + dpadMoveY));
+                    rb.rightFrontDrive.setPower(((moveY / 2) - (rotate / 1.5) + (moveX / 2) + dpadMoveX + dpadMoveY));
+                    rb.rightBackDrive.setPower (((moveY / 2) - (rotate / 1.5) - (moveX / 2) - dpadMoveX + dpadMoveY));
+                    rb.leftBackDrive.setPower  (((moveY / 2) + (rotate / 1.5) + (moveX / 2) + dpadMoveX + dpadMoveY));
                 }
-
-                if (lift0) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_0);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-                }
-
-                if (lift1) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_1);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-                }
-
-                if (lift2) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_2);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-                }
-
-                if (lift3) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_3);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-                }
-
-                if (lift4) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_4);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-
-                }
-
-                if (lift5) {
-                    rb.robotArm.setTargetPosition(rb.LIFT_5);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
-
-                }
-
-                if (gamepad2.a && rb.robotArm.getCurrentPosition() > 3157) { // 1100) {
-                    readyToCap = false;
-                    rb.robotArm.setTargetPosition(rb.LIFT_5);
-                    rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rb.robotArm.setPower(0.5);
-                }
-
-                if (rb.activeGamepad1.start) {
-                    rb.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    rb.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    rb.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    rb.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                }
-
-                if (toggleButton == true && toggled == 0) {
-                    toggled = 1;
-                    facingFront = false;
-                }
-
-                if (toggleButton == false && toggled == 1) {
-                    toggled = 2;
-                }
-
-                if (toggleButton == true && toggled == 2) {
-                    toggled = 3;
-                    facingFront = true;
-                }
-
-                if (toggleButton == false && toggled == 3) {
-                    toggled = 0;
-                }
-
-                if (takingIn || altintake) {
-                    rb.intake.setPower(1);
-                }
-
-                if (takingOut) {
-                    rb.intake.setPower(-1);
-                }
-
-                if ((takingOut == false) && (takingIn == false)) {
-                    rb.intake.setPower(0);
-                }
-
-                /*
-                cap:1940
-                pickup:50
-                layer 3:2130
-                layer 2: 590
-                layer 1: 330
-                */
-
-                // telemetry.addData("FRONT LEFT", leftFrontDrive.getCurrentPosition());
-                // telemetry.addData("FRONT RIGHT", rightFrontDrive.getCurrentPosition());
-                // telemetry.addData("BACK LEFT", leftBackDrive.getCurrentPosition());
-                // telemetry.addData("BACK RIGHT", rightBackDrive.getCurrentPosition());
-                telemetry.addData("armPosition", rb.robotArm.getCurrentPosition());
-
-                if (spinLeft) {
-                    rb.spinnerR.setPower(0.5);
-                    rb.spinnerL.setPower(0.5);
+            } else {
+                if (fast) {
+                    rb.leftFrontDrive.setPower (-moveY + rotate + moveX + dpadMoveX - dpadMoveY);
+                    rb.rightFrontDrive.setPower(-moveY - rotate - moveX - dpadMoveX - dpadMoveY);
+                    rb.rightBackDrive.setPower (-moveY - rotate + moveX + dpadMoveX - dpadMoveY);
+                    rb.leftBackDrive.setPower  (-moveY + rotate - moveX - dpadMoveX - dpadMoveY);
                 } else {
-                    if (spinRight) {
-                        rb.spinnerR.setPower(-0.5);
-                        rb.spinnerL.setPower(-0.5);
-                    } else {
-                        rb.spinnerR.setPower(0);
-                        rb.spinnerL.setPower(0);
-                    }
+                    rb.leftFrontDrive.setPower ((-(moveY / 2) + (rotate / 1.5) + (moveX / 2) + dpadMoveX - dpadMoveY));
+                    rb.rightFrontDrive.setPower((-(moveY / 2) - (rotate / 1.5) - (moveX / 2) - dpadMoveX - dpadMoveY));
+                    rb.rightBackDrive.setPower ((-(moveY / 2) - (rotate / 1.5) + (moveX / 2) + dpadMoveX - dpadMoveY));
+                    rb.leftBackDrive.setPower  ((-(moveY / 2) + (rotate / 1.5) - (moveX / 2) - dpadMoveX - dpadMoveY));
                 }
-                /* on comment indefinetly
-                if (armUp > 0.3) {
+            }
+
+            if (lift0) {
+                rb.robotArm.setTargetPosition(rb.LIFT_0);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+            }
+
+            if (lift1) {
+                rb.robotArm.setTargetPosition(rb.LIFT_1);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+            }
+
+            if (lift2) {
+                rb.robotArm.setTargetPosition(rb.LIFT_2);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+            }
+
+            if (lift3) {
+                rb.robotArm.setTargetPosition(rb.LIFT_3);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+            }
+
+            if (lift4) {
+                rb.robotArm.setTargetPosition(rb.LIFT_4);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+
+            }
+
+            if (lift5) {
+                rb.robotArm.setTargetPosition(rb.LIFT_5);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(rb.LIFT_ARM_ROTATE_PWR);
+
+            }
+
+            if (gamepad2.a && rb.robotArm.getCurrentPosition() > 3157) { // 1100) {
+                readyToCap = false;
+                rb.robotArm.setTargetPosition(rb.LIFT_5);
+                rb.robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rb.robotArm.setPower(0.5);
+            }
+
+            if (rb.activeGamepad1.start) {
+                rb.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rb.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rb.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rb.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+
+            if (toggleButton == true && toggled == 0) {
+                toggled = 1;
+                facingFront = false;
+            }
+
+            if (toggleButton == false && toggled == 1) {
+                toggled = 2;
+            }
+
+            if (toggleButton == true && toggled == 2) {
+                toggled = 3;
+                facingFront = true;
+            }
+
+            if (toggleButton == false && toggled == 3) {
+                toggled = 0;
+            }
+
+            if (takingIn || altintake) {
+                rb.intake.setPower(1);
+            }
+
+            if (takingOut) {
+                rb.intake.setPower(-1);
+            }
+
+            if ((takingOut == false) && (takingIn == false)) {
+                rb.intake.setPower(0);
+            }
+
+            /*
+            cap:1940
+            pickup:50
+            layer 3:2130
+            layer 2: 590
+            layer 1: 330
+            */
+
+            // telemetry.addData("FRONT LEFT", leftFrontDrive.getCurrentPosition());
+            // telemetry.addData("FRONT RIGHT", rightFrontDrive.getCurrentPosition());
+            // telemetry.addData("BACK LEFT", leftBackDrive.getCurrentPosition());
+            // telemetry.addData("BACK RIGHT", rightBackDrive.getCurrentPosition());
+            telemetry.addData("armPosition", rb.robotArm.getCurrentPosition());
+
+            if (spinLeft) {
+                rb.spinnerR.setPower(0.5);
+                rb.spinnerL.setPower(0.5);
+            } else {
+                if (spinRight) {
+                    rb.spinnerR.setPower(-0.5);
+                    rb.spinnerL.setPower(-0.5);
+                } else {
+                    rb.spinnerR.setPower(0);
+                    rb.spinnerL.setPower(0);
+                }
+            }
+            /* on comment indefinetly
+            if (armUp > 0.3) {
+                robotArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robotArm.setPower(0.5);
+                whereArm = robotArm.getCurrentPosition();
+            } else {
+                if (armDown > 0.3 && robotArm.getCurrentPosition() > 50) {
                     robotArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    robotArm.setPower(0.5);
+                    robotArm.setPower(-0.5);
                     whereArm = robotArm.getCurrentPosition();
                 } else {
-                    if (armDown > 0.3 && robotArm.getCurrentPosition() > 50) {
-                        robotArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                        robotArm.setPower(-0.5);
-                        whereArm = robotArm.getCurrentPosition();
-                    } else {
-                        robotArm.setPower(1);
-                        robotArm.setTargetPosition(whereArm);
-                        robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    }
-                }*/
+                    robotArm.setPower(1);
+                    robotArm.setTargetPosition(whereArm);
+                    robotArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+            }*/
 
 
 

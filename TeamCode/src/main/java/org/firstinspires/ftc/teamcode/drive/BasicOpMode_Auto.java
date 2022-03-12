@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -39,7 +40,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.drive.RobotReference;
 
 
 /**
@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.drive.RobotReference;
  */
 
 @Autonomous(name = "Basic: Auto OpMode", group = "Auto Opmode")
-//@Disabled
+@Disabled
 public class BasicOpMode_Auto extends LinearOpMode {
 
     RobotReference rb = new RobotReference();
@@ -95,7 +95,7 @@ public class BasicOpMode_Auto extends LinearOpMode {
 
 
             telemetry.addData("Please choose a setting", "");
-            if (rb.redOrBlue) {
+            if (rb.isRed) {
                 telemetry.addData("Red", rb.settings[rb.onSetting - 1]);
                 telemetry.addData("Red", ">" + rb.settings[rb.onSetting]);
                 telemetry.addData("Red", rb.settings[rb.onSetting + 1]);
@@ -126,13 +126,13 @@ public class BasicOpMode_Auto extends LinearOpMode {
             }
 
             if (gamepad1.dpad_left) {
-                rb.redOrBlue = true;
+                rb.isRed = true;
             } else if (gamepad1.dpad_right) {
-                rb.redOrBlue = false;
+                rb.isRed = false;
             }
 
             if (isStarted()) {
-                if (rb.redOrBlue) {
+                if (rb.isRed) {
                     rb.choosingAuto = true;
                     rb.autoMode = rb.onSetting;
                 } else {
@@ -201,7 +201,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
 
         while(opModeIsActive());
     }
-
     public void redDuckWithFreight() {
         moveRight(13, rb.MEDIUM);
         waitForDriveMotors(rb.errorValue);
@@ -240,7 +239,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
                 break;
         }
     }
-
     public void redDuckWithNoFreight() {
         moveRight(13, rb.SLOW);
         waitForDriveMotors(rb.errorValue);
@@ -256,7 +254,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         moveBackward(17, rb.SLOW);
         waitForDriveMotors(rb.errorValue);
     }
-
     public void redWarehouseWithFreight() {
         //positioning to score
         moveRight(18,rb.MEDIUM);
@@ -304,7 +301,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         }
 
     }
-
     public void redWarehouseWithNoFreight() {
 //        liftArm(29, rb.LIFT_ARM_ROTATE_PWR); // was 10
         moveBackward(36, rb.FAST);
@@ -317,7 +313,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         waitForDriveMotors(rb.errorValue);
 //        liftArm(-29, rb.LIFT_ARM_ROTATE_PWR); // was -10
     }
-
     public void blueDuckWithFreight() { // unfinished
         moveRight(24, rb.SLOW);
         waitForDriveMotors(rb.errorValue);
@@ -391,7 +386,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         waitForDriveMotors(rb.errorValue);
          */
     }
-
     public void blueDuckWithNoFreight() {
         moveRight(-4.75, rb.SLOW);
         waitForDriveMotors(rb.errorValue);
@@ -408,7 +402,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         waitForDriveMotors(rb.errorValue);
         moveForward(18, rb.SLOW);
     }
-
     public void blueWarehouseWithFreight() {
         //positioning to score
         moveLeft(18,rb.MEDIUM);
@@ -457,7 +450,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
             waitForDriveMotors(rb.errorValue);
         }
     }
-
     public void blueWarehouseWithNoFreight() {
 //        liftArm(29, rb.LIFT_ARM_ROTATE_PWR); // was 10
 //        waitForDriveMotors(rb.errorValue);
@@ -471,8 +463,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         waitForDriveMotors(rb.errorValue);
 //        liftArm(-29, rb.LIFT_ARM_ROTATE_PWR); // was -10
     }
-
-
     public void level1(double inches){
         moveBackward(inches, rb.FAST);
         waitForDriveMotors(rb.errorValueSlow);
@@ -485,9 +475,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
         waitForArm();
     }
-
-
-
     public void level2(double inches){
         moveForward(inches, rb.FAST);
         waitForDriveMotors(rb.errorValueSlow);
@@ -500,7 +487,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
         waitForArm();
     }
-
     public void level3(double inches){
         moveForward(inches, rb.FAST);
         waitForDriveMotors(rb.errorValueSlow);
@@ -513,7 +499,6 @@ public class BasicOpMode_Auto extends LinearOpMode {
         liftArm(rb.LIFT_0,rb.LIFT_ARM_ROTATE_PWR);
         waitForArm();
     }
-
 
 /*
     public void flipHub(){
